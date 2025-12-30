@@ -20,7 +20,9 @@ from visualizer import (
     plot_deviation_returns_plotly,
     plot_cumulative_deviations_plotly,
     plot_sector_subplots_plotly,
-    plot_moving_average_plotly
+    plot_moving_average_plotly_50day,
+    plot_moving_average_plotly_100day,
+    plot_moving_average_plotly_170day
 )
 
 
@@ -68,7 +70,9 @@ def main():
     plot_deviation_returns_plotly(deviation_returns)
     plot_cumulative_deviations_plotly(deviation_returns)
     plot_sector_subplots_plotly(deviation_returns)
-    plot_moving_average_plotly(deviation_returns, window=50)
+    plot_moving_average_plotly_50day(deviation_returns, window=50)
+    plot_moving_average_plotly_100day(deviation_returns, window=100)
+    plot_moving_average_plotly_170day(deviation_returns, window=170)
     
     # Optional: Also create static matplotlib plots
     print("\nCreating static matplotlib plots...")

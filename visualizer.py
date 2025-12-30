@@ -508,7 +508,7 @@ def plot_sector_subplots_plotly(
     return fig
 
 
-def plot_moving_average_plotly(
+def plot_moving_average_plotly_50day(
     deviation_returns: pd.DataFrame,
     window: int = 50,
     save_path: Optional[str] = 'moving_average_50day.html',
@@ -603,6 +603,195 @@ def plot_moving_average_plotly(
     
     return fig
 
+def plot_moving_average_plotly_100day(
+    deviation_returns: pd.DataFrame,
+    window: int = 100,
+    save_path: Optional[str] = 'moving_average_100day.html',
+    figsize: tuple = (1400, 800)
+) -> go.Figure:
+    """
+    Plot 100-day moving average of deviation returns for all sectors using Plotly.
+    
+    Args:
+        deviation_returns: DataFrame with deviation returns (sector - S&P 500)
+        window: Number of days for moving average (default: 100)
+        save_path: Path to save the HTML file (None to not save)
+        figsize: Figure size (width, height) in pixels
+    
+    Returns:
+        Plotly Figure object
+    """
+    # Calculate moving average
+    moving_avg = deviation_returns.rolling(window=window).mean()
+    
+    # Drop NaN values (from first 'window' days)
+    moving_avg = moving_avg.dropna()
+    
+    if moving_avg.empty:
+        print(f"⚠ Warning: Moving average is empty. Need at least {window} days of data.")
+        return go.Figure()
+    
+    fig = go.Figure()
+    
+    # Define colors for each sector
+    colors = px.colors.qualitative.Set3 + px.colors.qualitative.Pastel
+    
+    # Plot each sector's moving average
+    for i, sector in enumerate(moving_avg.columns):
+        fig.add_trace(go.Scatter(
+            x=moving_avg.index,
+            y=moving_avg[sector] * 100,  # Convert to percentage
+            mode='lines',
+            name=sector,
+            line=dict(width=3, color=colors[i % len(colors)]),
+            hovertemplate=f'<b>{sector}</b><br>' +
+                         'Date: %{x}<br>' +
+                         f'{window}-Day MA: %{{y:.2f}}%<extra></extra>'
+        ))
+    
+    # Add zero reference line
+    fig.add_hline(
+        y=0,
+        line_dash="dash",
+        line_color="black",
+        opacity=0.5,
+        annotation_text="S&P 500 Reference"
+    )
+    
+    # Update layout
+    fig.update_layout(
+        title={
+            'text': f'S&P Sector Deviation Returns - {window}-Day Moving Average',
+            'x': 0.5,
+            'xanchor': 'center',
+            'font': {'size': 20, 'family': 'Arial Black'}
+        },
+        xaxis_title='Date',
+        yaxis_title=f'Deviation Returns - {window}-Day MA (%)',
+        hovermode='x unified',
+        width=figsize[0],
+        height=figsize[1],
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1,
+            xanchor="left",
+            x=1.01
+        ),
+        template='plotly_white',
+        xaxis=dict(
+            showgrid=True,
+            gridwidth=1,
+            gridcolor='lightgray'
+        ),
+        yaxis=dict(
+            showgrid=True,
+            gridwidth=1,
+            gridcolor='lightgray'
+        )
+    )
+    
+    # Save if path provided
+    if save_path:
+        fig.write_html(save_path)
+        print(f"✓ Interactive moving average plot saved to {save_path}")
+    
+    return fig
+
+def plot_moving_average_plotly_170day(
+    deviation_returns: pd.DataFrame,
+    window: int = 170,
+    save_path: Optional[str] = 'moving_average_170day.html',
+    figsize: tuple = (1400, 800)
+) -> go.Figure:
+    """
+    Plot 170-day moving average of deviation returns for all sectors using Plotly.
+    
+    Args:
+        deviation_returns: DataFrame with deviation returns (sector - S&P 500)
+        window: Number of days for moving average (default: 170)
+        save_path: Path to save the HTML file (None to not save)
+        figsize: Figure size (width, height) in pixels
+    
+    Returns:
+        Plotly Figure object
+    """
+    # Calculate moving average
+    moving_avg = deviation_returns.rolling(window=window).mean()
+    
+    # Drop NaN values (from first 'window' days)
+    moving_avg = moving_avg.dropna()
+    
+    if moving_avg.empty:
+        print(f"⚠ Warning: Moving average is empty. Need at least {window} days of data.")
+        return go.Figure()
+    
+    fig = go.Figure()
+    
+    # Define colors for each sector
+    colors = px.colors.qualitative.Set3 + px.colors.qualitative.Pastel
+    
+    # Plot each sector's moving average
+    for i, sector in enumerate(moving_avg.columns):
+        fig.add_trace(go.Scatter(
+            x=moving_avg.index,
+            y=moving_avg[sector] * 100,  # Convert to percentage
+            mode='lines',
+            name=sector,
+            line=dict(width=3, color=colors[i % len(colors)]),
+            hovertemplate=f'<b>{sector}</b><br>' +
+                         'Date: %{x}<br>' +
+                         f'{window}-Day MA: %{{y:.2f}}%<extra></extra>'
+        ))
+    
+    # Add zero reference line
+    fig.add_hline(
+        y=0,
+        line_dash="dash",
+        line_color="black",
+        opacity=0.5,
+        annotation_text="S&P 500 Reference"
+    )
+    
+    # Update layout
+    fig.update_layout(
+        title={
+            'text': f'S&P Sector Deviation Returns - {window}-Day Moving Average',
+            'x': 0.5,
+            'xanchor': 'center',
+            'font': {'size': 20, 'family': 'Arial Black'}
+        },
+        xaxis_title='Date',
+        yaxis_title=f'Deviation Returns - {window}-Day MA (%)',
+        hovermode='x unified',
+        width=figsize[0],
+        height=figsize[1],
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1,
+            xanchor="left",
+            x=1.01
+        ),
+        template='plotly_white',
+        xaxis=dict(
+            showgrid=True,
+            gridwidth=1,
+            gridcolor='lightgray'
+        ),
+        yaxis=dict(
+            showgrid=True,
+            gridwidth=1,
+            gridcolor='lightgray'
+        )
+    )
+    
+    # Save if path provided
+    if save_path:
+        fig.write_html(save_path)
+        print(f"✓ Interactive moving average plot saved to {save_path}")
+    
+    return fig
 
 if __name__ == "__main__":
     # Test the visualization module with sample data
