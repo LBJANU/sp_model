@@ -16,7 +16,11 @@ from returns_calculator import (
 from visualizer import (
     plot_deviation_returns,
     plot_cumulative_deviations,
-    plot_sector_subplots
+    plot_sector_subplots,
+    plot_deviation_returns_plotly,
+    plot_cumulative_deviations_plotly,
+    plot_sector_subplots_plotly,
+    plot_moving_average_plotly
 )
 
 
@@ -59,13 +63,17 @@ def main():
     # Phase 3: Visualization
     print("\n[Phase 3] Creating visualizations...")
     
-    # Plot deviation returns over time
+    # Create interactive Plotly plots (HTML files for hosting)
+    print("\nCreating interactive Plotly plots...")
+    plot_deviation_returns_plotly(deviation_returns)
+    plot_cumulative_deviations_plotly(deviation_returns)
+    plot_sector_subplots_plotly(deviation_returns)
+    plot_moving_average_plotly(deviation_returns, window=50)
+    
+    # Optional: Also create static matplotlib plots
+    print("\nCreating static matplotlib plots...")
     plot_deviation_returns(deviation_returns)
-    
-    # Plot cumulative deviations
     plot_cumulative_deviations(deviation_returns)
-    
-    # Plot individual sector subplots
     plot_sector_subplots(deviation_returns)
     
     print("\nPhase 3 complete! All visualizations created.")
