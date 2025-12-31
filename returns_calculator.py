@@ -62,15 +62,31 @@ def calculate_deviation_returns(
 
 def clean_returns_data(returns: pd.DataFrame) -> pd.DataFrame:
     """
-    Remove rows with NaN values (typically the first row after pct_change).
+    Remove the first row with NaN values (from pct_change calculation).
+    Keep other rows even if some sectors have NaN (they didn't exist yet).
     
     Args:
         returns: DataFrame with returns (may contain NaN values)
     
     Returns:
-        DataFrame with NaN rows removed
+        DataFrame with first NaN row removed, but keeping rows where some sectors have NaN
     """
-    cleaned = returns.dropna()
+    # Only drop the first row (which is NaN for all sectors from pct_change)
+    # Keep all other rows, even if individual sectors have NaN (they started trading later)
+    if isinstance(returns, pd.Series):
+        # For Series, just drop first row if it's NaN
+        if returns.iloc[0] is pd.NA or pd.isna(returns.iloc[0]):
+            cleaned = returns.iloc[1:]
+        else:
+            cleaned = returns
+    else:
+        # For DataFrame, drop first row only if ALL columns are NaN (from pct_change)
+        # But keep rows where only some sectors have NaN (they started later)
+        if returns.iloc[0].isna().all():
+            cleaned = returns.iloc[1:]
+        else:
+            cleaned = returns
+    
     return cleaned
 
 
