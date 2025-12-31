@@ -47,12 +47,14 @@ def calculate_deviation_returns(
     Returns:
         DataFrame with deviation returns for each sector
     """
-    # Align dates to ensure we're subtracting matching days
-    common_dates = sector_returns.index.intersection(spy_returns.index)
-    sector_returns_aligned = sector_returns.loc[common_dates]
-    spy_returns_aligned = spy_returns.loc[common_dates]
+    # Align to all dates (union), so each sector shows from its own start date
+    # Sectors will have NaN for dates before they started trading
+    all_dates = sector_returns.index.union(spy_returns.index).sort_values()
+    sector_returns_aligned = sector_returns.reindex(all_dates)
+    spy_returns_aligned = spy_returns.reindex(all_dates)
     
     # Calculate deviation: sector return - S&P return
+    # NaN values will remain NaN (sectors that don't have data for that date)
     deviation_returns = sector_returns_aligned.subtract(spy_returns_aligned, axis=0)
     
     return deviation_returns

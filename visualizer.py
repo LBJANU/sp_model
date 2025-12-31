@@ -529,12 +529,9 @@ def plot_moving_average_plotly_50day(
     # Calculate moving average
     moving_avg = deviation_returns.rolling(window=window).mean()
     
-    # Drop NaN values (from first 'window' days)
-    moving_avg = moving_avg.dropna()
-    
-    if moving_avg.empty:
-        print(f"⚠ Warning: Moving average is empty. Need at least {window} days of data.")
-        return go.Figure()
+    # Don't drop NaN rows globally - each sector should show from when it has data
+    # Plotly will automatically skip NaN values when plotting
+    # This allows sectors with different start dates to show their full history
     
     fig = go.Figure()
     
@@ -624,12 +621,9 @@ def plot_moving_average_plotly_100day(
     # Calculate moving average
     moving_avg = deviation_returns.rolling(window=window).mean()
     
-    # Drop NaN values (from first 'window' days)
-    moving_avg = moving_avg.dropna()
-    
-    if moving_avg.empty:
-        print(f"⚠ Warning: Moving average is empty. Need at least {window} days of data.")
-        return go.Figure()
+    # Don't drop NaN rows globally - each sector should show from when it has data
+    # Plotly will automatically skip NaN values when plotting
+    # This allows sectors with different start dates to show their full history
     
     fig = go.Figure()
     
@@ -719,12 +713,9 @@ def plot_moving_average_plotly_170day(
     # Calculate moving average
     moving_avg = deviation_returns.rolling(window=window).mean()
     
-    # Drop NaN values (from first 'window' days)
-    moving_avg = moving_avg.dropna()
-    
-    if moving_avg.empty:
-        print(f"⚠ Warning: Moving average is empty. Need at least {window} days of data.")
-        return go.Figure()
+    # Don't drop NaN rows globally - each sector should show from when it has data
+    # Plotly will automatically skip NaN values when plotting
+    # This allows sectors with different start dates to show their full history
     
     fig = go.Figure()
     

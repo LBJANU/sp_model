@@ -137,13 +137,20 @@ def fetch_all_data(
     # Fetch sector data
     sector_prices = fetch_sector_data(start_date, end_date)
     
-    # Align dates (keep only dates present in both)
-    common_dates = spy_prices.index.intersection(sector_prices.index)
-    spy_prices = spy_prices.loc[common_dates]
-    sector_prices = sector_prices.loc[common_dates]
+    # Align to S&P 500 dates (S&P is the reference, sectors may have different start dates)
+    # This ensures we have S&P data for all dates, but sectors can have NaN for early dates
+    all_dates = spy_prices.index.union(sector_prices.index).sort_values()
+    spy_prices = spy_prices.reindex(all_dates)
+    sector_prices = sector_prices.reindex(all_dates)
     
-    print(f"\n✓ Data aligned: {len(common_dates)} common trading days")
-    print(f"  Date range: {common_dates.min().date()} to {common_dates.max().date()}")
+    # Show date range info for each sector
+    print(f"\n✓ Data prepared:")
+    print(f"  S&P 500 date range: {spy_prices.index.min().date()} to {spy_prices.index.max().date()}")
+    print(f"  Sector date ranges:")
+    for sector in sector_prices.columns:
+        sector_dates = sector_prices[sector].dropna()
+        if not sector_dates.empty:
+            print(f"    {sector:30s}: {sector_dates.index.min().date()} to {sector_dates.index.max().date()}")
     
     return spy_prices, sector_prices
 
