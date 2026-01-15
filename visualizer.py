@@ -511,7 +511,7 @@ def plot_sector_subplots_plotly(
 def plot_moving_average_plotly_50day(
     deviation_returns: pd.DataFrame,
     window: int = 50,
-    save_path: Optional[str] = 'moving_average_50day.html',
+    save_path: Optional[str] = '50day.html',
     figsize: tuple = (1400, 800)
 ) -> go.Figure:
     """
@@ -603,7 +603,7 @@ def plot_moving_average_plotly_50day(
 def plot_moving_average_plotly_100day(
     deviation_returns: pd.DataFrame,
     window: int = 100,
-    save_path: Optional[str] = 'moving_average_100day.html',
+    save_path: Optional[str] = '100day.html',
     figsize: tuple = (1400, 800)
 ) -> go.Figure:
     """
@@ -695,7 +695,7 @@ def plot_moving_average_plotly_100day(
 def plot_moving_average_plotly_170day(
     deviation_returns: pd.DataFrame,
     window: int = 170,
-    save_path: Optional[str] = 'moving_average_170day.html',
+    save_path: Optional[str] = '170day.html',
     figsize: tuple = (1400, 800)
 ) -> go.Figure:
     """
