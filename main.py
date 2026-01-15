@@ -35,7 +35,7 @@ def main():
     
     # Phase 1: Data Fetching
     print("\n[Phase 1] Fetching data...")
-    spy_prices, sector_prices = fetch_all_data(years_back=16)
+    spy_prices, sector_prices = fetch_all_data(years_back=17)
     
     # Display data info
     get_data_info(spy_prices, sector_prices)
