@@ -1,0 +1,46 @@
+name: Daily Data Update
+
+on:
+  # Run daily at 10:51 PM EST (3:51 AM UTC next day)
+  schedule:
+    - cron: '51 3 * * *'  # Cron format: minute hour day month day-of-week
+  # Also allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Allow pushing commits
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Run main script
+      run: |
+        python main.py
+        
+    - name: Commit and push HTML files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add *.html
+        # Only commit if there are changes
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Auto-update: Regenerate HTML files [$(date +'%Y-%m-%d %H:%M:%S')]"
+          git push
+        fi
+
