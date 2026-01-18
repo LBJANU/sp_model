@@ -1,9 +1,9 @@
 name: Daily Data Update
 
 on:
-  # Run daily at 4:05 AM UTC
+  # Run daily at 8:00 PM EST (1:00 AM UTC next day)
   schedule:
-    - cron: '10 4 * * *'  # Cron format: minute hour day month day-of-week
+    - cron: '0 1 * * *'  # Cron format: minute hour day month day-of-week
   # Also allow manual triggering
   workflow_dispatch:
 
